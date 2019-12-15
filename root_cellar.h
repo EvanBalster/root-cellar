@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <cmath>
+#include <algorithm>
 #include <ostream>
 
 #include <iostream> //debug
@@ -127,23 +128,29 @@ namespace rootbeer
 			
 		union {float_t xf; int_t xi;};
 		union {float_t yf; int_t yi;};
-		yf = std::pow(range_min, float_t(1)/ROOT);
-		--yi;
-		//float_t xf_lower = detail::pow_i<ROOT>::calc(yf);
+		/*yf = std::pow(range_min, exponent); ((ROOT > 0) ? --yi : ++yi);
+		float_t xf_lower = detail::pow_i<ROOT>::calc(yf);*/
 			
 		// Measurements...
 		float_t worst_error = 0.0;
 		for (xi = ib; xi <= ie; ++xi)
 		{
 			// Move root-value to closest approximation
-			yf = std::pow(xf, exponent);
+			switch (ROOT)
+			{
+			case  2: yf =              std::sqrt(xf); break;
+			case -2: yf = float_t(1) / std::sqrt(xf); break;
+			case  4: yf =              std::sqrt(std::sqrt(xf)); break;
+			case -4: yf = float_t(1) / std::sqrt(std::sqrt(xf)); break;
+			default: yf = std::pow(xf, exponent); break;
+			}
 			/*while (true)
 			{
-				++yi;
+				((ROOT > 0) ? ++yi : --yi);
 				float_t xf_upper = detail::pow_i<ROOT>::calc(yf);
 				if (xf_upper > xf)
 				{
-					if (xf_upper - xf > xf - xf_lower) --yi;
+					if (xf_upper - xf > xf - xf_lower) ((ROOT > 0) ? --yi : ++yi);
 					break;
 				}
 				xf_lower = xf_upper;
@@ -185,7 +192,7 @@ namespace rootbeer
 		
 		RootApprox(as_int_t _constant) :
 			constant(_constant),
-			_rshift(std::ceil(std::log2(std::abs(N)))) {}
+			_rshift(as_int_t(std::ceil(std::log2(std::abs(N))))) {}
 		
 		float_t operator()(const float_t y) const
 		{
@@ -231,38 +238,38 @@ namespace rootbeer
 			p           = float_t(1)/N,
 			one_minus_p = float_t(1) - p;
 		as_int_t
-			constant_min = std::floor(one_minus_p * L * (float_t(B) - sigma_max)),
-			constant_max = std::ceil (one_minus_p * L * (float_t(B) - sigma_min));
+			constant_min = as_int_t(std::floor(one_minus_p * L * (float_t(B) - sigma_max))),
+			constant_max = as_int_t(std::ceil (one_minus_p * L * (float_t(B) - sigma_min)));
 			
 		// Determine testing range...
 		float_t
 			test_min = float_t(1),
 			test_max = float_t(1 << std::abs(N));
 		
-		double   best_score = 1e40;
+		float_t  best_score = float_t(1e20);
 		as_int_t best_constant = -1;
 		
-		//std::cout << "Searching constants between 0x"
-		//	<< constant_min << " and 0x" << constant_max << "..." << std::endl;
+		std::cout << "//Searching constants between 0x"
+			<< constant_min << " and 0x" << constant_max << "..." << std::endl;
 		
-		auto get_score = [=](as_int_t k)
+		auto get_score = [=](as_int_t k) -> float_t
 		{
 			RootApprox<N, T_Float, NewtonSteps> candidate(k);
 			switch (basis)
 			{
 			default:
 			case BEST_WORST_CASE:  return std::abs(Test_Root_Approx_WorstCase<N>(candidate, test_min, test_max));
-			case BEST_MEAN_SQUARE: return float(Test_Pow_Approx(candidate, p, test_min, test_max).mean_sq_error);
+			case BEST_MEAN_SQUARE: return float_t(Test_Pow_Approx(candidate, p, test_min, test_max).mean_sq_error);
 			}
 		};
 		
 		as_int_t l = constant_min, r = constant_max;
-		double l_score = get_score(l), r_score = get_score(r);
+		float_t l_score = get_score(l), r_score = get_score(r);
 		while (l+1 < r)
 		{
 			// Score the value in the middle
 			as_int_t m = l + (r-l)/2;
-			double m_score = get_score(m);
+			float_t m_score = get_score(m);
 			
 			if (m_score < best_score)
 			{
@@ -290,10 +297,10 @@ namespace rootbeer
 		
 		if (l+1 < r)
 		{
-			//std::cout << "    ...exhaustive between " << l << " and " << r << "..." << std::endl;
+			std::cout << "//  ...exhaustive between " << l << " and " << r << "..." << std::endl;
 			for (as_int_t k = l; k <= r; ++k)
 			{
-				double score = get_score(k);
+				float_t score = get_score(k);
 				if (score < best_score)
 				{
 					best_score = score;
@@ -302,7 +309,7 @@ namespace rootbeer
 			}
 		}
 		
-		//std::cout << "    ...best constant is " << best_constant << " with error score " << best_score << std::endl;
+		std::cout << "//  ...best constant is " << best_constant << " with error score " << best_score << std::endl;
 		return RootApprox<N, T_Float, NewtonSteps>(best_constant);
 	}
 	

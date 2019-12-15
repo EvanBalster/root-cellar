@@ -6,6 +6,10 @@
 //  Copyright © 2019 Interactopia LLC. All rights reserved.
 //
 
+#if _MSC_VER
+#include <immintrin.h>
+#endif
+
 #include <iostream>
 #include <iomanip>
 #include <cmath>
@@ -74,6 +78,13 @@ static float pow_quarter  (const float y)    {return std::pow(y,-.25f);}
 
 int main(int argc, const char * argv[])
 {
+#if _MSC_VER
+	// FTZ and DAZ flags for speed
+	_MM_SET_FLUSH_ZERO_MODE(_MM_FLUSH_ZERO_ON);
+	_MM_SET_DENORMALS_ZERO_MODE(_MM_DENORMALS_ZERO_ON);
+#endif
+
+
 	std::cout << std::hex;
 	
 	for (auto &v : TEST_VALUES) v = (std::rand() / float(RAND_MAX));
@@ -101,8 +112,13 @@ int main(int argc, const char * argv[])
 	Print_Test_Root_Approx("rb_inv_4_root",  rb_inv_4_root,  -4);
 	
 	std::cout << std::endl << std::endl;
+
+	std::cout << "#pragma once" << std::endl;
+	std::cout << "#include <stdint.h>" << std::endl;
+	std::cout << std::endl << std::endl;
 	
 	std::cout << "// Functions optimized for worst-case error" << std::endl;
+	std::cout << std::endl << std::endl;
 	
 	generate_root_functions< 2,float,1>(BEST_WORST_CASE);
 	generate_root_functions<-2,float,1>(BEST_WORST_CASE);
@@ -122,6 +138,8 @@ int main(int argc, const char * argv[])
 	//std::cout << Test_RMS_Error(classicinvsqrt, -.5f, 1.f, 2.f) << std::endl;
 	
 	//std::cout << classicinvsqrt << std::endl;
+
+	std::cin.ignore(255, '\n');
 	
 	return 0;
 }
