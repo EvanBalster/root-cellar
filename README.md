@@ -15,7 +15,23 @@ In time, this library will provide a reference table of optimal constants, preci
 
 I'm researching fast roots for applications in signal processing and graphics rendering — and as a fun distraction from more intensive research work.
 
-Fast roots are useful in performance-intensive applications where a small amount of relative error is tolerable.  Modern CPUs offer intrinsic support for `sqrt(y)`, making a fast approximation unnecessary.  The other approximations in this library seem to outperform their standard-library equivalents, including `1/sqrt(y)`.
+Fast roots are useful in performance-intensive applications where a small amount of relative error is tolerable.  Modern CPUs offer intrinsic support for `sqrt(y)`, making a fast approximation unnecessary.  The other approximations in this library often outperform their standard equivalents, however, including `1/sqrt(y)` and especially calls to `pow`.
+
+
+
+## Anatomy of the Algorithms
+
+The fast root functions studied with this library have the following steps:
+
+* Reinterpret the bits of floating-point parameter `y` as an integer `i`.
+* Set `i` to `k + i * p` where `p` is a fractional exponent and `k` is a "magic constant".
+* Reinterpret the new `i` as a floating-point value `x`.
+* Apply zero or more refinements to `x`
+  * Refinements are based on the Newtonian formula:
+    `x *= (1-k) + k * y / x^(1/p)`
+    Where `k` is close to `p`.
+
+This library supports only roots — exponents `p = 1/N` where `N` is some integer.
 
 
 
@@ -23,14 +39,14 @@ Fast roots are useful in performance-intensive applications where a small amount
 
 There is some flexibility in the design of fast approximate roots.  Historic implementations have been tuned to minimize worst-case error.  Applications exist, however, where it may be better to minimize mean error, mean-squared error or error when `y` is very close to 1.
 
-This library specifies root approximations with five parameters:
+This library specifies root approximations with four parameters:
 
-* **The exponent** being approximated *(1/N for integer N)*
-* **The "magic constant"** *(integer)*
+* **The exponent `p`** *(1/N for integer N)*
+* **The "magic constant" `k`** *(integer)*
 * **Number of Newtonian refinement steps** *[0,∞)*
-* *Planned*: **Newtonian refinement constants** *(two floating-point values)*
+* **Newtonian refinement constant** *(floating-point)*
 
-These designs are assessed using these criteria:
+Designs are evaluated using these criteria:
 
 * Relative computation time
 * Root-mean-square relative error `sqrt(mean: (approx_f(y) - f(y))^2 / y)`
