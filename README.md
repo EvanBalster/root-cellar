@@ -69,62 +69,12 @@ Error values were calculated exhaustively for these constants; I believe these a
 
 | N    | 0 Refinements                                                | 1 Refinement                                                 | 2 Refinements                                                |
 | ---- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| +2   | k: `0x1fbb4f2e`<br/>m: *n/a*<br/>eMax: **.0347475**<br/>eRMS: .0190506<br/>eMean: –.005133 | k: `0x1fbed49a`<br>m: `+.510929`<br/>
-eMax: **.000239058**<br/>
-eRMS: .000148007<br/>
-eMean: –.0000454788 | k: `0x1fbb75ad`<br>m: `+.500122`<br/>
-eMax: **1.68567e-7**<br/>
-eRMS: 4.7967e-8<br/>
-eMean: –1.41369e-8 |
-| –2   | k: `0x5f37642f`<br/>m: *n/a*<br/>
-eMax: **.0342129**<br/>eRMS: .0244769<br/>
-eMean: +0.01338 | k: `0x5f32a121`<br/>m: `-.535102`<br/>
-eMax: **.000773445**<br/>
-eRMS: .000494072<br/>
-eMean: –.000025526 | k: `0x5f3634f9`<br/>m: `-.501326`<br/>
-eMax: **1.40452e-6**<br/>
-eRMS: 8.95917e-7<br/>
-eMean: +6.21959e-7 |
-| +3   | k: `0x2a510680`<br/>m: *n/a* <br/>
-eMax: **.0315547**<br/>
-eRMS: .0180422<br/>
-eMean: +.00321401 | k: `0x2a543aa3`<br/>m: `+.347252`<br/>
-eMax: **.000430098**<br/>
-eRMS: .000237859<br/>
-eMean: –.0000977778 | k: `0x`<br/>m: `+.333818`<br/>
-eMax: 6.45394e-7<br/>
-eRMS: 2.90881e-7<br/>
-eMean: –2.40255e-7 |
-| –3   | k: `0x54a232a3`<br/>m: *n/a*<br/>
-eMax: **.0342405**<br/>
-eRMS: .0195931<br/>
-eMean: +.0068072 | k: `0x549da7bf`<br/>m: `-.364707`<br/>
-eMax: **.00102717**<br/>
-eRMS: .000742809<br/>
-eMean: +.000277928 | k: `0x54a1b99d`<br/>m: `-.334677`<br/>
-eMax: **2.18458e-6**<br/>
-eRMS: 1.04454e-6<br/>
-eMean: +6.17437e-7 |
-| +4   | k: `0x2f9b374e`<br/>m: *n/a*<br/>
-eMax: **.0342323**<br/>
-eRMS: .015625<br/>
-eMean: +.00425431 | k: `0x2f9ed7c0`<br/>m: `+.266598`<br/>
-eMax: **.000714053**<br/>
-eRMS: .000444122<br/>
-eMean: –.000195135 | k: `0x2f9b8068`<br/>m: `+.250534`<br/>
-eMax: **9.49041e-7**<br/>
-eRMS: 5.28477e-7<br/>
-eMean: –4.76837e-07 |
-| –4   | k: `0x4f58605b`<br/>m: *n/a*<br/>
-eMax: **.0312108**<br/>
-eRMS: .020528<br/>
-eMean: +.00879536 | k: `0x4f542107`<br/>m: `-.277446`<br/>
-eMax: **.00110848**<br/>
-eRMS: .000733642<br/>
-eMean: +.000175304 | k: `0x4f58020d`<br/>m: `-.251282`<br/>
-eMax: **2.76944e-6**<br/>
-eRMS: 1.3487e-6<br/>
-eMean: +5.97779e-7 |
+| +2   | k: `0x1fbb4f2e`<br/>m: *n/a*<br/>eMax: **.0347475**<br/>eRMS: .0190506<br/>eMean: –.005133 | k: `0x1fbed49a`<br>m: `+.510929`<br/>eMax: **.000239058**<br/>eRMS: .000148007<br/>eMean: –.0000454788 | k: `0x1fbb75ad`<br>m: `+.500122`<br/>eMax: **1.68567e-7**<br/>eRMS: 4.7967e-8<br/>eMean: –1.41369e-8 |
+| –2   | k: `0x5f37642f`<br/>m: *n/a*<br/>eMax: **.0342129**<br/>eRMS: .0244769<br/>eMean: +0.01338 | k: `0x5f32a121`<br/>m: `-.535102`<br/>eMax: **.000773445**<br/>eRMS: .000494072<br/>eMean: –.000025526 | k: `0x5f3634f9`<br/>m: `-.501326`<br/>eMax: **1.40452e-6**<br/>eRMS: 8.95917e-7<br/>eMean: +6.21959e-7 |
+| +3   | k: `0x2a510680`<br/>m: *n/a* <br/>eMax: **.0315547**<br/>eRMS: .0180422<br/>eMean: +.00321401 | k: `0x2a543aa3`<br/>m: `+.347252`<br/>eMax: **.000430098**<br/>eRMS: .000237859<br/>eMean: –.0000977778 | k: `0x`<br/>m: `+.333818`<br/>eMax: 6.45394e-7<br/>eRMS: 2.90881e-7<br/>eMean: –2.40255e-7 |
+| –3   | k: `0x54a232a3`<br/>m: *n/a*<br/>eMax: **.0342405**<br/>eRMS: .0195931<br/>eMean: +.0068072 | k: `0x549da7bf`<br/>m: `-.364707`<br/>eMax: **.00102717**<br/>eRMS: .000742809<br/>eMean: +.000277928 | k: `0x54a1b99d`<br/>m: `-.334677`<br/>eMax: **2.18458e-6**<br/>eRMS: 1.04454e-6<br/>eMean: +6.17437e-7 |
+| +4   | k: `0x2f9b374e`<br/>m: *n/a*<br/>eMax: **.0342323**<br/>eRMS: .015625<br/>eMean: +.00425431 | k: `0x2f9ed7c0`<br/>m: `+.266598`<br/>eMax: **.000714053**<br/>eRMS: .000444122<br/>eMean: –.000195135 | k: `0x2f9b8068`<br/>m: `+.250534`<br/>eMax: **9.49041e-7**<br/>eRMS: 5.28477e-7<br/>eMean: –4.76837e-07 |
+| –4   | k: `0x4f58605b`<br/>m: *n/a*<br/>eMax: **.0312108**<br/>eRMS: .020528<br/>eMean: +.00879536 | k: `0x4f542107`<br/>m: `-.277446`<br/>eMax: **.00110848**<br/>eRMS: .000733642<br/>eMean: +.000175304 | k: `0x4f58020d`<br/>m: `-.251282`<br/>eMax: **2.76944e-6**<br/>eRMS: 1.3487e-6<br/>eMean: +5.97779e-7 |
 
 See `root_cellar_generated.h` for reference implementations of these functions.
 
@@ -135,25 +85,11 @@ These designs were found using a fast approximation of the maximum error.  There
 | N    | 0 Refinements                                               | 1 Refinement                                                 | 2 Refinements                                                |
 | ---- | ----------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | +2   | k: `0x1ff769e5b00cb024`<br/>m: *n/a*<br/>eMax: **.0347474** | k: `0x1ff7da9258189b10`<br />m: `+.51093`<br/>eMax: **.000238945** | k: `0x1ff76e33f8e94831`<br />m: `+.500124`<br/>eMax: **3.08405e-8** |
-| –2   | k: `0x5fe6ec85e7de30da`<br/>m: *n/a*<br/>eMax: **.0342128** | k: `0x5fe65423e81eece9`<br/>m: `-.535103`<br/>
-eMax: **.00077328** | k: `0x5fe6bbf0c11e182d`<br/>m: `-.501434`<br/>
-eMax: **1.36764e-6** |
-| +3   | k: `0x2a9f76253119d328`<br/>m: *n/a*<br/>
-eMax: **.0315546** | k: `0x2a9fdca8d39b1833`<br/>m: `+.347251`<br/>
-eMax: **.000429969** | k: `0x2a9f5317d3f76c27`<br/>m: `+.333791`<br/>
-eMax: **4.7027e-7** |
-| –3   | k: `0x553ef0ff289dd794`<br/>m: *n/a*<br/>
-eMax: **.0342405** | k: `0x553e5fa2bf4bb94e`<br/>m: `-.364707`<br/>
-eMax: **.001027** | k: `0x553eb1a359e5ec49`<br/>m: `-.335169`<br/>
-eMax: **3.77555e-6** |
-| +4   | k: `0x2ff366e9846f3cf9`<br/>m: *n/a*<br/>
-eMax: **.0342321** | k: `0x2ff3daf850a16998`<br/>m: `+.266598`<br/>
-eMax: **.00071393** | k: `0x2ff3578de1c1dc42`<br/>m: `+.250729`<br/>
-eMax: **1.41358e-6** |
-| –4   | k: `0x4feb0c0b7fa996ad`<br/>m: *n/a*<br/>
-eMax: **.0312107** | k: `0x4fea8420dfe0c1b2`<br/>m: `-.277446`<br/>
-eMax: **.0011083** | k: `0x4feaff5406bb3437`<br/>m: `-.251281`<br/>
-eMax: **2.61417e-6** |
+| –2   | k: `0x5fe6ec85e7de30da`<br/>m: *n/a*<br/>eMax: **.0342128** | k: `0x5fe65423e81eece9`<br/>m: `-.535103`<br/>eMax: **.00077328** | k: `0x5fe6bbf0c11e182d`<br/>m: `-.501434`<br/>eMax: **1.36764e-6** |
+| +3   | k: `0x2a9f76253119d328`<br/>m: *n/a*<br/>eMax: **.0315546** | k: `0x2a9fdca8d39b1833`<br/>m: `+.347251`<br/>eMax: **.000429969** | k: `0x2a9f5317d3f76c27`<br/>m: `+.333791`<br/>eMax: **4.7027e-7** |
+| –3   | k: `0x553ef0ff289dd794`<br/>m: *n/a*<br/>eMax: **.0342405** | k: `0x553e5fa2bf4bb94e`<br/>m: `-.364707`<br/>eMax: **.001027** | k: `0x553eb1a359e5ec49`<br/>m: `-.335169`<br/>eMax: **3.77555e-6** |
+| +4   | k: `0x2ff366e9846f3cf9`<br/>m: *n/a*<br/>eMax: **.0342321** | k: `0x2ff3daf850a16998`<br/>m: `+.266598`<br/>eMax: **.00071393** | k: `0x2ff3578de1c1dc42`<br/>m: `+.250729`<br/>eMax: **1.41358e-6** |
+| –4   | k: `0x4feb0c0b7fa996ad`<br/>m: *n/a*<br/>eMax: **.0312107** | k: `0x4fea8420dfe0c1b2`<br/>m: `-.277446`<br/>eMax: **.0011083** | k: `0x4feaff5406bb3437`<br/>m: `-.251281`<br/>eMax: **2.61417e-6** |
 
 
 
