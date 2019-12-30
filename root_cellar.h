@@ -170,7 +170,6 @@ namespace rootbeer
 			worst_error};
 	}*/
 	
-	#if 0
 	template<int ROOT, typename T_Approx, typename T_Float>
 	inline float Test_Root_Approx_WorstCase(
 		const T_Approx &approx,
@@ -214,7 +213,6 @@ namespace rootbeer
 		}
 		return worst_error;
 	}
-	#endif
 	
 	
 	/*
@@ -407,13 +405,26 @@ namespace rootbeer
 		}
 	};
 	
+	template<typename I>
+	I nextpow2(const I v)
+	{
+		I m = std::max<I>(v,1)-1;
+		m = m | (v>>1) | (v>>2) | (v>>4);
+		if (sizeof(I) > 1) m |= v >> 8;
+		if (sizeof(I) > 2) m |= v >> 16;
+		if (sizeof(I) > 4) m |= v >> 32;
+		if (sizeof(I) > 8) m |= v >> 64;
+		return m+1;
+	}
+	
 	/*
 	
 	 */
 	enum BEST_APPROX_BASIS
 	{
-		BEST_WORST_CASE = 0,
+		BEST_WORST_CASE  = 0,
 		BEST_MEAN_SQUARE = 1,
+		APPROX_WORST_CASE = 2,
 	};
 	 
 	template<int N, typename T_Float, unsigned NewtonSteps = 1, BEST_APPROX_BASIS Basis = BEST_WORST_CASE>
@@ -436,9 +447,10 @@ namespace rootbeer
 		as_int_t
 			k_min = as_int_t(std::floor(one_minus_p * L * (float_t(B) - sigma_max))),
 			k_max = as_int_t(std::ceil (one_minus_p * L * (float_t(B) - sigma_min))),
-			m_min = reinterpret_float_int(p/float_t(2)),
-			m_max = reinterpret_float_int(p*float_t(2));
+			m_min = reinterpret_float_int(p),
+			m_max = reinterpret_float_int(p*float_t(1.5));
 		if (m_min > m_max) std::swap(m_min, m_max);
+		if (NewtonSteps == 0) m_max = m_min;
 			
 		// Determine testing range...
 		float_t
@@ -453,31 +465,39 @@ namespace rootbeer
 			switch (Basis)
 			{
 			default:
-			case BEST_WORST_CASE: return candidate.error_worstCase();
-				//return std::abs(Test_Root_Approx_WorstCase<N>(candidate, test_min, test_max));
-			case BEST_MEAN_SQUARE: return float_t(Test_Root_Approx<N>(candidate, test_min, test_max).mean_sq_error);
+			case BEST_WORST_CASE:   return std::abs(Test_Root_Approx_WorstCase<N>(candidate, test_min, test_max));
+			case APPROX_WORST_CASE: return candidate.error_worstCase();
+			case BEST_MEAN_SQUARE:  return float_t(Test_Root_Approx<N>(candidate, test_min, test_max).mean_sq_error);
 			}
 		};
 		
 		std::cout << std::hex << "//Searching k in [0x"
 			<< k_min << ",0x" << k_max
 			<< "], m in [" << reinterpret_int_float(m_min)
-			<< "," << reinterpret_int_float(m_max) << "]..." << std::endl;
+			<< "," << reinterpret_int_float(m_max) << "] ";
 		
 		float_t  best_score = float_t(1e20);
 		as_int_t best_k = -1, best_m = -1;
 		as_int_t
-			granularity = 4096,
 			k_lo = k_min, k_hi = k_max,
-			m_lo = m_min, m_hi = m_max;
+			m_lo = m_min, m_hi = m_max,
+			k_step = (k_max - k_min) / 8,
+			m_step = (m_max - m_min) / 8;
+			
+		k_step = nextpow2(k_step);
+		m_step = nextpow2(m_step);
+		k_step = m_step = std::max(k_step, m_step);
 			
 		while (k_lo < k_hi || m_lo < m_hi)
 		{
+			std::cout << '.' << std::flush;
+			if (k_step == 0) k_step = 1;
+			if (m_step == 0) m_step = 1;
 			as_int_t
-				k_start = k_lo + ((k_hi-k_lo)/granularity)/2,
-				m_start = m_lo + ((m_hi-m_lo)/granularity)/2;
-			for (as_int_t k = k_start; k <= k_hi; k += granularity)
-				for (as_int_t m = m_start; m <= m_hi; m += granularity)
+				k_start = k_lo + ((k_hi-k_lo)/k_step)/2,
+				m_start = m_lo + ((m_hi-m_lo)/m_step)/2;
+			for (as_int_t k = k_start; k <= k_hi; k += k_step)
+				for (as_int_t m = m_start; m <= m_hi; m += m_step)
 			{
 				float_t score = get_score(k, m);
 				
@@ -489,12 +509,15 @@ namespace rootbeer
 				}
 			}
 			
-			granularity >>= 4;
-			k_lo = std::max(k_min, best_k - 8 * granularity);
-			k_hi = std::min(k_max, best_k + 8 * granularity);
-			m_lo = std::max(m_min, best_m - 8 * granularity);
-			m_hi = std::min(m_max, best_m + 8 * granularity);
+			k_step = ((k_step > 1) ? std::max<as_int_t>(k_step>>2, 1) : 0);
+			m_step = ((m_step > 1) ? std::max<as_int_t>(m_step>>2, 1) : 0);
+			k_lo = std::max(k_min, best_k - 4 * k_step);
+			k_hi = std::min(k_max, best_k + 4 * k_step);
+			m_lo = std::max(m_min, best_m - 4 * m_step);
+			m_hi = std::min(m_max, best_m + 4 * m_step);
 		}
+		
+		std::cout << std::endl;
 		
 		
 		/*as_int_t l = constant_min, r = constant_max;

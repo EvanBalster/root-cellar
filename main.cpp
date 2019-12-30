@@ -35,13 +35,16 @@ void Print_Test_Root_Approx(const char *name, const T_Func &func)
 	std::cout << "\tApproximate x^(1/" << double(ROOT_INDEX) << ") with " << name
 		// << ", x=[" << range_min << "," << range_max << "]"
 		<< std::endl;
-	auto test = Test_Root_Approx<ROOT_INDEX>(func, range_min, range_max);
-	std::cout
-		<< "\tError:" << std::endl
-		<< "\t\tRMS:  " << std::sqrt(test.mean_sq_error) << std::endl
-		<< "\t\tmean: " << test.mean_error << std::endl
-		<< "\t\tmin:  " << test.min_error << " @ " << test.min_error_arg << std::endl
-		<< "\t\tmax:  " << test.max_error << " @ " << test.max_error_arg << std::endl;
+	if (sizeof(float_t) <= 4)
+	{
+		auto test = Test_Root_Approx<ROOT_INDEX>(func, range_min, range_max);
+		std::cout
+			<< "\tError:" << std::endl
+			<< "\t\tRMS:  " << std::sqrt(test.mean_sq_error) << std::endl
+			<< "\t\tmean: " << test.mean_error << std::endl
+			<< "\t\tmin:  " << test.min_error << " @ " << test.min_error_arg << std::endl
+			<< "\t\tmax:  " << test.max_error << " @ " << test.max_error_arg << std::endl;
+	}
 }
 
 template<typename T_Func>
@@ -118,7 +121,7 @@ int main(int argc, const char * argv[])
 	//Print_Test_Root_Approx<-2>("rb_inv_2_root",  rb_inv_2_root);
 	//Print_Test_Root_Approx<-4>("rb_inv_4_root",  rb_inv_4_root);
 	
-	{
+	/*{
 		RootApprox< 2, float, 1> ra_2(0x1fbb67a5);
 		RootApprox<-2, float, 1> ra_i2(0x5f375a55);
 		RootApprox< 3, float, 1> ra_3(0x2a51206c);
@@ -130,7 +133,7 @@ int main(int argc, const char * argv[])
 		std::cout << "ra_2: quick-worst " << std::endl << ra_2.error_worstCase() << std::endl;
 		Print_Test_Root_Approx<3>("ra_3", ra_3);
 		std::cout << "ra_3: quick-worst " << std::endl << ra_3.error_worstCase() << std::endl;
-	}
+	}*/
 	
 	
 	std::cout << std::endl << std::endl;
@@ -142,19 +145,31 @@ int main(int argc, const char * argv[])
 	std::cout << "// Functions optimized for worst-case error" << std::endl;
 	std::cout << std::endl << std::endl;
 	
-	generate_root_functions< 2,float,1,BEST_WORST_CASE>();
+	/*generate_root_functions< 2,float,1,BEST_WORST_CASE>();
 	generate_root_functions<-2,float,1,BEST_WORST_CASE>();
 	generate_root_functions< 3,float,1,BEST_WORST_CASE>();
 	generate_root_functions<-3,float,1,BEST_WORST_CASE>();
 	generate_root_functions< 4,float,1,BEST_WORST_CASE>();
-	generate_root_functions<-4,float,1,BEST_WORST_CASE>();
+	generate_root_functions<-4,float,1,BEST_WORST_CASE>();*/
 	
-	/*generate_root_functions< 2,double,1>(BEST_WORST_CASE);
-	generate_root_functions<-2,double,1>(BEST_WORST_CASE);
-	generate_root_functions< 3,double,1>(BEST_WORST_CASE);
-	generate_root_functions<-3,double,1>(BEST_WORST_CASE);
-	generate_root_functions< 4,double,1>(BEST_WORST_CASE);
-	generate_root_functions<-4,double,1>(BEST_WORST_CASE);*/
+	generate_root_functions< 2,double,0,APPROX_WORST_CASE>();
+	generate_root_functions< 2,double,1,APPROX_WORST_CASE>();
+	generate_root_functions< 2,double,2,APPROX_WORST_CASE>();
+	generate_root_functions<-2,double,0,APPROX_WORST_CASE>();
+	generate_root_functions<-2,double,1,APPROX_WORST_CASE>();
+	generate_root_functions<-2,double,2,APPROX_WORST_CASE>();
+	generate_root_functions< 3,double,0,APPROX_WORST_CASE>();
+	generate_root_functions< 3,double,1,APPROX_WORST_CASE>();
+	generate_root_functions< 3,double,2,APPROX_WORST_CASE>();
+	generate_root_functions<-3,double,0,APPROX_WORST_CASE>();
+	generate_root_functions<-3,double,1,APPROX_WORST_CASE>();
+	generate_root_functions<-3,double,2,APPROX_WORST_CASE>();
+	generate_root_functions< 4,double,0,APPROX_WORST_CASE>();
+	generate_root_functions< 4,double,1,APPROX_WORST_CASE>();
+	generate_root_functions< 4,double,2,APPROX_WORST_CASE>();
+	generate_root_functions<-4,double,0,APPROX_WORST_CASE>();
+	generate_root_functions<-4,double,1,APPROX_WORST_CASE>();
+	generate_root_functions<-4,double,2,APPROX_WORST_CASE>();
 	
 	//std::cout << "RootApprox<-2,float,1> error: " << std::flush;
 	//std::cout << Test_RMS_Error(classicinvsqrt, -.5f, 1.f, 2.f) << std::endl;
